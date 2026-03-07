@@ -1,7 +1,7 @@
 ﻿import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 
 const navItems = [
-  { to: '/', label: '首页1' },
+  { to: '/', label: '首页' },
   { to: '/schedule', label: '更新时间表' },
   { to: '/detail', label: '番剧详情' },
   { to: '/player', label: '播放页' },
