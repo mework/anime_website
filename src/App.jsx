@@ -9,7 +9,7 @@ const navItems = [
 
 const trendingCards = [
   ['Shadow Monarch', 'Action, Fantasy', '4.9', '/images/stitch/img-08.jpg'],
-  ['Neon Horizon', 'Sci-Fi, Cyberpunk', '4.7', '/images/stitch/img-24.jpg'],
+  ['Neon Horizon', 'Sci-Fi, Cyberpunk', '4.8', '/images/stitch/img-24.jpg'],
   ['Starlight Journey', 'Adventure, Slice of Life', '4.8', '/images/stitch/img-25.jpg'],
   ['Zenith Blades', 'Samurai, Drama', '4.6', '/images/stitch/img-13.jpg'],
   ['Arcane Legacy', 'Magic, Supernatural', '5.0', '/images/stitch/img-12.jpg'],
