@@ -1,0 +1,3 @@
+{
+  "extends": "@anime_website/config/tsconfig.base.json"
+}

@@ -1,0 +1,46 @@
+{
+  "name": "anime_website",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:web": "turbo -F web dev",
+    "dev:server": "turbo -F server dev",
+    "db:push": "turbo -F @anime_website/db db:push",
+    "db:studio": "turbo -F @anime_website/db db:studio",
+    "db:generate": "turbo -F @anime_website/db db:generate",
+    "db:migrate": "turbo -F @anime_website/db db:migrate",
+    "db:local": "turbo -F @anime_website/db db:local",
+    "deploy": "turbo -F @anime_website/infra deploy",
+    "destroy": "turbo -F @anime_website/infra destroy",
+    "check": "biome check --write .",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@anime_website/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@anime_website/config": "workspace:*",
+    "@biomejs/biome": "^2.2.0",
+    "@cloudflare/workers-types": "^4.20251213.0",
+    "@types/bun": "catalog:",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "turbo": "^2.8.12",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --write ."
+    ]
+  },
+  "packageManager": "pnpm@10.32.1"
+}

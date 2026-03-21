@@ -1,0 +1,24 @@
+{
+  "name": "@anime_website/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@anime_website/db": "workspace:*",
+    "@anime_website/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@anime_website/config": "workspace:*",
+    "typescript": "^5"
+  }
+}

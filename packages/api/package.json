@@ -1,0 +1,27 @@
+{
+  "name": "@anime_website/api",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@anime_website/auth": "workspace:*",
+    "@anime_website/db": "workspace:*",
+    "@anime_website/env": "workspace:*",
+    "@trpc/client": "catalog:",
+    "@trpc/server": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@anime_website/config": "workspace:*",
+    "hono": "catalog:",
+    "typescript": "^5"
+  }
+}
