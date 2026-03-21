@@ -91,6 +91,51 @@ For more details, see the guide on [Deploying to Cloudflare with Alchemy](https:
 
 - Initialize hooks: `pnpm run prepare`
 - Format and lint fix: `pnpm run check`
+- Validate the latest commit message: `pnpm run commitlint`
+
+### Commit Message Convention
+
+Use Conventional Commits so commit messages pass `commitlint`:
+
+```text
+<type>(<scope>): <subject>
+```
+
+Example:
+
+```text
+feat(web): add anime hero banner
+fix(server): handle missing auth session
+chore(repo): align turbo scripts
+```
+
+Allowed `type` values:
+
+- `feat`
+- `fix`
+- `docs`
+- `style`
+- `refactor`
+- `perf`
+- `test`
+- `build`
+- `ci`
+- `chore`
+- `revert`
+
+Allowed `scope` values:
+
+- `web`
+- `server`
+- `api`
+- `auth`
+- `db`
+- `env`
+- `ui`
+- `infra`
+- `config`
+- `repo`
+- `deps`
 
 ## Project Structure
 
