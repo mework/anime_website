@@ -1,17 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import AuthPageShell from "@/components/auth-page-shell";
-import SignInForm from "@/components/sign-in-form";
+import SignUpForm from "@/components/sign-up-form";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/register")({
 	head: () => ({
 		meta: [
 			{
-				title: "登录 | MidnightAnime",
+				title: "注册 | MidnightAnime",
 			},
 			{
 				name: "description",
-				content: "登录 MidnightAnime，继续访问你的账号与动画内容。",
+				content: "创建 MidnightAnime 账号，加入动漫社区并开始你的追番之旅。",
 			},
 		],
 	}),
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/login")({
 function RouteComponent() {
 	return (
 		<AuthPageShell>
-			<SignInForm />
+			<SignUpForm />
 		</AuthPageShell>
 	);
 }
