@@ -45,8 +45,9 @@ function RootComponent() {
 	const pathname = useRouterState({
 		select: (state) => state.location.pathname,
 	});
-	const isAuthPage = pathname === "/login" || pathname === "/register";
-	const showDevtools = import.meta.env.DEV && !isAuthPage;
+	const isStandalonePage =
+		pathname === "/" || pathname === "/login" || pathname === "/register";
+	const showDevtools = import.meta.env.DEV && !isStandalonePage;
 
 	return (
 		<>
@@ -59,10 +60,10 @@ function RootComponent() {
 			>
 				<div
 					className={
-						isAuthPage ? "min-h-svh" : "grid h-svh grid-rows-[auto_1fr]"
+						isStandalonePage ? "min-h-svh" : "grid h-svh grid-rows-[auto_1fr]"
 					}
 				>
-					{!isAuthPage ? <Header /> : null}
+					{!isStandalonePage ? <Header /> : null}
 					<Outlet />
 				</div>
 				<Toaster richColors />
