@@ -1,7 +1,12 @@
 import { Toaster } from "@anime_website/ui/components/sonner";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { HeadContent, Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import {
+	createRootRouteWithContext,
+	HeadContent,
+	Outlet,
+	useRouterState,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import Header from "@/components/header";
@@ -11,49 +16,61 @@ import type { trpc } from "@/utils/trpc";
 import "../index.css";
 
 export interface RouterAppContext {
-  trpc: typeof trpc;
-  queryClient: QueryClient;
+	trpc: typeof trpc;
+	queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
-  component: RootComponent,
-  head: () => ({
-    meta: [
-      {
-        title: "anime_website",
-      },
-      {
-        name: "description",
-        content: "anime_website is a web application",
-      },
-    ],
-    links: [
-      {
-        rel: "icon",
-        href: "/favicon.ico",
-      },
-    ],
-  }),
+	component: RootComponent,
+	head: () => ({
+		meta: [
+			{
+				title: "anime_website",
+			},
+			{
+				name: "description",
+				content: "anime_website is a web application",
+			},
+		],
+		links: [
+			{
+				rel: "icon",
+				href: "/favicon.ico",
+			},
+		],
+	}),
 });
 
 function RootComponent() {
-  return (
-    <>
-      <HeadContent />
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        disableTransitionOnChange
-        storageKey="vite-ui-theme"
-      >
-        <div className="grid grid-rows-[auto_1fr] h-svh">
-          <Header />
-          <Outlet />
-        </div>
-        <Toaster richColors />
-      </ThemeProvider>
-      <TanStackRouterDevtools position="bottom-left" />
-      <ReactQueryDevtools position="bottom" buttonPosition="bottom-right" />
-    </>
-  );
+	const pathname = useRouterState({
+		select: (state) => state.location.pathname,
+	});
+	const isLoginPage = pathname === "/login";
+	const showDevtools = import.meta.env.DEV && !isLoginPage;
+
+	return (
+		<>
+			<HeadContent />
+			<ThemeProvider
+				attribute="class"
+				defaultTheme="dark"
+				disableTransitionOnChange
+				storageKey="vite-ui-theme"
+			>
+				<div
+					className={
+						isLoginPage ? "min-h-svh" : "grid h-svh grid-rows-[auto_1fr]"
+					}
+				>
+					{!isLoginPage ? <Header /> : null}
+					<Outlet />
+				</div>
+				<Toaster richColors />
+			</ThemeProvider>
+			{showDevtools ? <TanStackRouterDevtools position="bottom-left" /> : null}
+			{showDevtools ? (
+				<ReactQueryDevtools position="bottom" buttonPosition="bottom-right" />
+			) : null}
+		</>
+	);
 }

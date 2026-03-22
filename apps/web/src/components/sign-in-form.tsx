@@ -1,8 +1,18 @@
 import { Button } from "@anime_website/ui/components/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@anime_website/ui/components/card";
+import { Checkbox } from "@anime_website/ui/components/checkbox";
 import { Input } from "@anime_website/ui/components/input";
 import { Label } from "@anime_website/ui/components/label";
 import { useForm } from "@tanstack/react-form";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -10,126 +20,253 @@ import { authClient } from "@/lib/auth-client";
 
 import Loader from "./loader";
 
-export default function SignInForm({ onSwitchToSignUp }: { onSwitchToSignUp: () => void }) {
-  const navigate = useNavigate({
-    from: "/",
-  });
-  const { isPending } = authClient.useSession();
+const AUTH_OPTIONS = [
+	{
+		name: "Discord",
+		iconUrl:
+			"https://lh3.googleusercontent.com/aida-public/AB6AXuB0Xx0BcUCqmoEtMJiPcJbjNU7oW0a2wmdRPCn9gHqb7ouIBk3wVYX-djHVioKr1ygWvc8PFRVFv4vl-7u7hodrh0_zrg1Oaq1EyuMhE-HiIaN2OyOApW8kYLcsdIE3dd4o0qkA794IJkYW8BaGVqKgnn1e2pN6cMs9oGvtrd1fk1DbumGxCL4A8wX7yHSfwXuVvAZ6Uv2SguKRgoXX50jZI3EKXc9mSd4vpwmG3-YWyW9Za84n4w-HxSoEiR5ajI2yeVV-FkGZ8rY",
+	},
+	{
+		name: "Google",
+		iconUrl:
+			"https://lh3.googleusercontent.com/aida-public/AB6AXuAQLzX_-Nc0VgmRX2VTl0WKHh_8KN33GbCrqnjolCt12oBKvKuKrJrbCoz_v69BvoG6ukpdc1KQRWZHysPY_ReBVDeLE527kyU4tQcytwOxEVjZPPW1bnmgk_XmSw0lu5AhkHVEaj9Cg2wxlETALKIwznuNpaXvcBSr54FdKcqGrDVLQgBN6u9-e_hIuvRaYd0ufJCFMdMaDRYN9oDYMVFTAxjv1qgCxA0ykLGVE45XY4xg_tk6ikjo9RT-DSzXjHdtEIr0uWrpjew",
+	},
+] as const;
 
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: async ({ value }) => {
-      await authClient.signIn.email(
-        {
-          email: value.email,
-          password: value.password,
-        },
-        {
-          onSuccess: () => {
-            navigate({
-              to: "/dashboard",
-            });
-            toast.success("Sign in successful");
-          },
-          onError: (error) => {
-            toast.error(error.error.message || error.error.statusText);
-          },
-        },
-      );
-    },
-    validators: {
-      onSubmit: z.object({
-        email: z.email("Invalid email address"),
-        password: z.string().min(8, "Password must be at least 8 characters"),
-      }),
-    },
-  });
+export default function SignInForm() {
+	const navigate = useNavigate({
+		from: "/login",
+	});
+	const { isPending } = authClient.useSession();
+	const [showPassword, setShowPassword] = useState(false);
 
-  if (isPending) {
-    return <Loader />;
-  }
+	const form = useForm({
+		defaultValues: {
+			email: "",
+			password: "",
+			rememberMe: false,
+		},
+		onSubmit: async ({ value }) => {
+			await authClient.signIn.email(
+				{
+					email: value.email,
+					password: value.password,
+				},
+				{
+					onSuccess: () => {
+						navigate({
+							to: "/dashboard",
+						});
+						toast.success("登录成功");
+					},
+					onError: (error) => {
+						toast.error(error.error.message || error.error.statusText);
+					},
+				},
+			);
+		},
+		validators: {
+			onSubmit: z.object({
+				email: z.email("请输入有效的邮箱地址"),
+				password: z.string().min(8, "密码长度不能少于 8 位"),
+				rememberMe: z.boolean(),
+			}),
+		},
+	});
 
-  return (
-    <div className="mx-auto w-full mt-10 max-w-md p-6">
-      <h1 className="mb-6 text-center text-3xl font-bold">Welcome Back</h1>
+	if (isPending) {
+		return <Loader />;
+	}
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-        className="space-y-4"
-      >
-        <div>
-          <form.Field name="email">
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Email</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="email"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.map((error) => (
-                  <p key={error?.message} className="text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </form.Field>
-        </div>
+	return (
+		<Card className="relative mx-auto w-full max-w-md overflow-hidden rounded-xl border border-blue-200/10 bg-[#141f3899] py-0 text-[#dee5ff] shadow-2xl shadow-blue-950/40 ring-0 backdrop-blur-[24px]">
+			<div className="absolute -top-24 -right-24 size-48 rounded-full bg-[#85adff]/10 blur-3xl" />
+			<CardHeader className="relative z-10 mb-8 gap-2 border-none px-8 pt-8 pb-0 text-center">
+				<CardTitle className="font-bold font-login-headline text-2xl text-[#dee5ff]">
+					欢迎回来
+				</CardTitle>
+				<CardDescription className="text-[#a3aac4] text-sm">
+					请输入您的凭据以访问库
+				</CardDescription>
+			</CardHeader>
 
-        <div>
-          <form.Field name="password">
-            {(field) => (
-              <div className="space-y-2">
-                <Label htmlFor={field.name}>Password</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.errors.map((error) => (
-                  <p key={error?.message} className="text-red-500">
-                    {error?.message}
-                  </p>
-                ))}
-              </div>
-            )}
-          </form.Field>
-        </div>
+			<CardContent className="relative z-10 px-8 py-0">
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						form.handleSubmit();
+					}}
+					className="flex flex-col gap-5"
+				>
+					<form.Field name="email">
+						{(field) => (
+							<div className="flex flex-col gap-2">
+								<Label
+									htmlFor={field.name}
+									className="ml-1 font-medium text-[#a3aac4] text-xs"
+								>
+									用户名或电子邮箱
+								</Label>
+								<div className="group relative">
+									<span className="material-symbols-outlined pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-[#6d758c] text-[20px] transition-colors group-focus-within:text-[#85adff]">
+										person
+									</span>
+									<Input
+										id={field.name}
+										name={field.name}
+										type="text"
+										variant="login"
+										autoComplete="email"
+										placeholder="请输入您的用户名"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										aria-invalid={field.state.meta.errors.length > 0}
+										className="pr-4 pl-12"
+									/>
+								</div>
+								{field.state.meta.errors.map((error) => (
+									<p key={error?.message} className="text-[#ff716c] text-sm">
+										{error?.message}
+									</p>
+								))}
+							</div>
+						)}
+					</form.Field>
 
-        <form.Subscribe
-          selector={(state) => ({ canSubmit: state.canSubmit, isSubmitting: state.isSubmitting })}
-        >
-          {({ canSubmit, isSubmitting }) => (
-            <Button type="submit" className="w-full" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Sign In"}
-            </Button>
-          )}
-        </form.Subscribe>
-      </form>
+					<form.Field name="password">
+						{(field) => (
+							<div className="flex flex-col gap-2">
+								<div className="flex items-center justify-between gap-3">
+									<Label
+										htmlFor={field.name}
+										className="ml-1 font-medium text-[#a3aac4] text-xs"
+									>
+										密码
+									</Label>
+								</div>
+								<div className="group relative">
+									<span className="material-symbols-outlined pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-[#6d758c] text-[20px] transition-colors group-focus-within:text-[#85adff]">
+										lock
+									</span>
+									<Input
+										id={field.name}
+										name={field.name}
+										type={showPassword ? "text" : "password"}
+										variant="login"
+										autoComplete="current-password"
+										placeholder="请输入您的密码"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										aria-invalid={field.state.meta.errors.length > 0}
+										className="pr-12 pl-12"
+									/>
+									<button
+										type="button"
+										className="absolute top-1/2 right-4 flex size-5 -translate-y-1/2 items-center justify-center text-[#6d758c] leading-none transition-colors hover:text-[#dee5ff]"
+										onClick={() => setShowPassword((value) => !value)}
+									>
+										<span className="material-symbols-outlined block text-[20px] leading-none">
+											{showPassword ? "visibility_off" : "visibility"}
+										</span>
+									</button>
+								</div>
+								{field.state.meta.errors.map((error) => (
+									<p key={error?.message} className="text-[#ff716c] text-sm">
+										{error?.message}
+									</p>
+								))}
+							</div>
+						)}
+					</form.Field>
 
-      <div className="mt-4 text-center">
-        <Button
-          variant="link"
-          onClick={onSwitchToSignUp}
-          className="text-indigo-600 hover:text-indigo-800"
-        >
-          Need an account? Sign Up
-        </Button>
-      </div>
-    </div>
-  );
+					<form.Field name="rememberMe">
+						{(field) => (
+							<div className="flex items-center justify-between gap-3 text-xs">
+								<label
+									htmlFor={field.name}
+									className="group flex cursor-pointer items-center gap-2 text-[#a3aac4]"
+								>
+									<Checkbox
+										id={field.name}
+										name={field.name}
+										checked={field.state.value}
+										onCheckedChange={(checked) => field.handleChange(checked)}
+										className="rounded border-[#40485d] bg-[#091328] text-[#85adff] data-checked:bg-[#85adff] data-checked:text-[#002150]"
+									/>
+									<span className="transition-colors group-hover:text-[#dee5ff]">
+										记住我
+									</span>
+								</label>
+								<Link
+									to="/"
+									className="font-medium text-[#85adff] text-xs transition-colors hover:text-blue-300"
+								>
+									忘记密码？
+								</Link>
+							</div>
+						)}
+					</form.Field>
+
+					<form.Subscribe
+						selector={(state) => ({
+							canSubmit: state.canSubmit,
+							isSubmitting: state.isSubmitting,
+						})}
+					>
+						{({ canSubmit, isSubmitting }) => (
+							<Button
+								type="submit"
+								size="lg"
+								className="mt-2 w-full rounded-xl bg-gradient-to-r from-[#85adff] to-[#6e9fff] py-3.5 font-semibold text-[#002150] text-sm shadow-[#85adff]/20 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-[#94b6ff] hover:to-[#7ba7ff] active:scale-95"
+								disabled={!canSubmit || isSubmitting}
+							>
+								{isSubmitting ? "登录中..." : "登录账号"}
+							</Button>
+						)}
+					</form.Subscribe>
+				</form>
+			</CardContent>
+
+			<CardFooter className="relative z-10 flex flex-col gap-8 border-none px-8 pt-8 pb-8">
+				<div className="flex w-full items-center gap-4">
+					<div className="h-px flex-1 bg-[#40485d]/30" />
+					<span className="font-bold text-[#6d758c] text-[10px] uppercase tracking-[0.28em]">
+						或通过以下方式继续
+					</span>
+					<div className="h-px flex-1 bg-[#40485d]/30" />
+				</div>
+
+				<div className="grid w-full grid-cols-2 gap-4">
+					{AUTH_OPTIONS.map((option) => (
+						<Button
+							key={option.name}
+							type="button"
+							variant="secondary"
+							className="h-auto gap-2 rounded-xl border-none bg-[#141f38] py-3 text-[#dee5ff] transition-all duration-300 hover:bg-[#192540]"
+						>
+							<img
+								alt={option.name}
+								src={option.iconUrl}
+								className="size-5 opacity-80"
+							/>
+							<span className="font-medium text-sm">{option.name}</span>
+						</Button>
+					))}
+				</div>
+
+				<p className="w-full text-center text-[#a3aac4] text-sm">
+					还没有账号？
+					<Link
+						to="/"
+						className="ml-1 font-bold text-[#85adff] transition-all hover:underline"
+					>
+						立即注册
+					</Link>
+				</p>
+			</CardFooter>
+		</Card>
+	);
 }
