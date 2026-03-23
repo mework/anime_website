@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
+import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { trpc } from "@/utils/trpc";
@@ -58,14 +59,19 @@ function RootComponent() {
 				disableTransitionOnChange
 				storageKey="vite-ui-theme"
 			>
-				<div
-					className={
-						isStandalonePage ? "min-h-svh" : "grid h-svh grid-rows-[auto_1fr]"
-					}
-				>
-					{!isStandalonePage ? <Header /> : null}
-					<Outlet />
-				</div>
+				{isStandalonePage ? (
+					<div className="min-h-svh">
+						<Outlet />
+					</div>
+				) : (
+					<div className="flex min-h-svh flex-col bg-[#060e20] text-[#dee5ff]">
+						<Header />
+						<main className="flex min-h-0 flex-1 flex-col pt-20">
+							<Outlet />
+						</main>
+						<Footer />
+					</div>
+				)}
 				<Toaster richColors />
 			</ThemeProvider>
 			{showDevtools ? <TanStackRouterDevtools position="bottom-left" /> : null}

@@ -77,16 +77,16 @@ export default function HomeHeader({ session, isPending }: HomeHeaderProps) {
 					) : session ? (
 						<div className="flex items-center gap-3">
 							<Link
-								to="/dashboard"
+								to="/profile-center"
 								className={cn(
 									buttonVariants({ variant: "ghost" }),
 									"rounded-lg px-5 py-2 font-medium text-[#a3aac4] hover:bg-white/5 hover:text-white",
 								)}
 							>
-								控制台
+								个人中心
 							</Link>
 							<Link
-								to="/dashboard"
+								to="/profile-center"
 								className="flex items-center gap-3 rounded-xl bg-[#141f38] px-4 py-2 text-[#dee5ff] transition-colors hover:bg-[#192540]"
 							>
 								<span className="flex size-8 items-center justify-center rounded-full bg-[#85adff] font-bold text-[#002150] text-sm">

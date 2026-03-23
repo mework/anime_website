@@ -1,41 +1,44 @@
-import { Link } from "@tanstack/react-router";
-
 export default function Footer() {
+	const footerLinks = ["隐私政策", "服务条款", "联系我们", "帮助中心"];
+	const footerIcons = ["public", "alternate_email", "group"];
+
 	return (
-		<footer className="bg-slate-950">
-			<div className="w-full bg-gradient-to-b from-transparent to-slate-900 px-6 py-12">
-				<div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
-					<div className="font-bold text-lg text-slate-300">CMAnime</div>
-					<div className="flex flex-wrap justify-center gap-6">
-						<Link
-							to="/"
-							className="font-login-body text-slate-500 text-xs opacity-80 transition-colors hover:text-blue-400 hover:opacity-100"
+		<footer className="relative w-full bg-[#091328] px-8 py-16">
+			<div className="mx-auto flex max-w-7xl flex-col items-center justify-center text-center">
+				<span className="mb-4 font-bold font-login-headline text-[#85adff] text-xl">
+					MidnightAnime
+				</span>
+
+				<div className="mb-8 flex flex-wrap justify-center gap-6">
+					{footerLinks.map((label) => (
+						<a
+							key={label}
+							href="/"
+							className="font-login-body text-[#a3aac4] text-sm transition-colors hover:text-white"
 						>
-							服务条款
-						</Link>
-						<Link
-							to="/"
-							className="font-login-body text-slate-500 text-xs opacity-80 transition-colors hover:text-blue-400 hover:opacity-100"
-						>
-							隐私政策
-						</Link>
-						<Link
-							to="/"
-							className="font-login-body text-slate-500 text-xs opacity-80 transition-colors hover:text-blue-400 hover:opacity-100"
-						>
-							帮助中心
-						</Link>
-						<Link
-							to="/"
-							className="font-login-body text-slate-500 text-xs opacity-80 transition-colors hover:text-blue-400 hover:opacity-100"
-						>
-							联系我们
-						</Link>
-					</div>
-					<div className="font-login-body text-slate-500 text-xs opacity-80">
-						© 2024 MidnightAnime. 保留所有权利。
-					</div>
+							{label}
+						</a>
+					))}
 				</div>
+
+				<div className="mb-8 flex gap-4">
+					{footerIcons.map((icon) => (
+						<a
+							key={icon}
+							href="/"
+							aria-label={icon}
+							className="group flex size-10 items-center justify-center rounded-full bg-[#141f38] transition-all hover:bg-[#85adff]"
+						>
+							<span className="material-symbols-outlined text-[#dee5ff] transition-colors group-hover:text-[#002c66]">
+								{icon}
+							</span>
+						</a>
+					))}
+				</div>
+
+				<p className="font-login-body text-[#a3aac4] text-sm">
+					© 2024 MidnightAnime. 午夜影院极致体验.
+				</p>
 			</div>
 		</footer>
 	);

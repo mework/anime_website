@@ -139,11 +139,11 @@ function HomeComponent() {
 								立即观看
 							</a>
 							<Link
-								to={session ? "/dashboard" : "/login"}
+								to={session ? "/profile-center" : "/login"}
 								className="inline-flex items-center gap-2 rounded-xl bg-[#141f38] px-8 py-4 font-bold font-login-body text-[#dee5ff] transition-colors hover:bg-[#192540]"
 							>
 								<span className="material-symbols-outlined">add</span>
-								{session ? "进入控制台" : "我的追番"}
+								{session ? "个人中心" : "我的追番"}
 							</Link>
 						</div>
 					</div>
